@@ -1,20 +1,23 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
 
-const app = express(); // Iniciando o App
-app.use(express.json()); // Permitir enviar dados para aplicação no formato JSON
+const app = express(); // iniciando o App
 
-// Iniciando o DB
+app.use(express.json()); // permitir enviar dados para aplicação no formato JSON
+app.use(cors()); // permitir acesso da api em qualquer domínio
+
+
 mongoose.connect(
     'mongodb://localhost:27017/nodeapi', 
     { useNewUrlParser: true, useUnifiedTopology: true }
-);
-requireDir('./src/models');
+); // iniciando o DB
+
+requireDir('./src/models'); // importando models
 
 const Product = mongoose.model('Product')
 
-// Rotas
-app.use('/api', require('./src/routes'));
+app.use('/api', require('./src/routes')); // Rotas
 
 app.listen(3001)
